@@ -70,7 +70,7 @@ Page({
   },
 
   // 导航
-  goToEmployees() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
-  goToAttendance() { wx.redirectTo({ url: '/pages/admin/attendance/attendance' }) },
-  goToConfig() { wx.redirectTo({ url: '/pages/admin/config/config' }) }
+  goToEmployees: function() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
+  goToAttendance: function() { wx.redirectTo({ url: '/pages/admin/attendance/attendance' }) },
+  goToConfig: function() { wx.redirectTo({ url: '/pages/admin/config/config' }) }
 })

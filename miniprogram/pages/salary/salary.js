@@ -17,8 +17,8 @@ Page({
     hasData: false
   },
 
-  onLoad() { this.loadSalaryData() },
-  onShow() { this.loadSalaryData() },
+  onLoad: function() { this.loadSalaryData() },
+  onShow: function() { this.loadSalaryData() },
 
   onPrevMonth() {
     let { year, month } = this.data

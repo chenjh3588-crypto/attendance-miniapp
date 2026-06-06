@@ -517,9 +517,8 @@ Page({
       }
     })
   },
-  },
 
-  goToEmployees() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
-  goToAttendance() { wx.redirectTo({ url: '/pages/admin/attendance/attendance' }) },
-  goToLogs() { wx.redirectTo({ url: '/pages/admin/logs/logs' }) }
+  goToEmployees: function() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
+  goToAttendance: function() { wx.redirectTo({ url: '/pages/admin/attendance/attendance' }) },
+  goToLogs: function() { wx.redirectTo({ url: '/pages/admin/logs/logs' }) }
 })

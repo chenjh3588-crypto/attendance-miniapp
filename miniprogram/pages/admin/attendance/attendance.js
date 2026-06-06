@@ -146,7 +146,7 @@ Page({
   },
 
   // 导航方法
-  goToEmployees() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
-  goToConfig() { wx.redirectTo({ url: '/pages/admin/config/config' }) },
-  goToLogs() { wx.redirectTo({ url: '/pages/admin/logs/logs' }) }
+  goToEmployees: function() { wx.redirectTo({ url: '/pages/admin/employees/employees' }) },
+  goToConfig: function() { wx.redirectTo({ url: '/pages/admin/config/config' }) },
+  goToLogs: function() { wx.redirectTo({ url: '/pages/admin/logs/logs' }) }
 })
