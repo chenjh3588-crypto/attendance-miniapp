@@ -109,13 +109,36 @@ function isSunday(dateStr) {
  * 获取设备信息
  */
 function getDeviceInfo() {
-  const systemInfo = wx.getSystemInfoSync()
-  return {
-    brand: systemInfo.brand,
-    model: systemInfo.model,
-    system: systemInfo.system,
-    platform: systemInfo.platform,
-    SDKVersion: systemInfo.SDKVersion
+  try {
+    const deviceInfo = wx.getDeviceInfo()
+    const windowInfo = wx.getWindowInfo()
+    return {
+      brand: deviceInfo.brand,
+      model: deviceInfo.model,
+      system: deviceInfo.system,
+      platform: deviceInfo.platform,
+      SDKVersion: windowInfo.SDKVersion || ''
+    }
+  } catch (e) {
+    // 兼容旧版基础库
+    try {
+      const systemInfo = wx.getSystemInfoSync()
+      return {
+        brand: systemInfo.brand,
+        model: systemInfo.model,
+        system: systemInfo.system,
+        platform: systemInfo.platform,
+        SDKVersion: systemInfo.SDKVersion
+      }
+    } catch (e2) {
+      return {
+        brand: '',
+        model: '',
+        system: '',
+        platform: '',
+        SDKVersion: ''
+      }
+    }
   }
 }
 
