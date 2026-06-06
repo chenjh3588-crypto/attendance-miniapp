@@ -1,0 +1,129 @@
+<view class="container calendar-page">
+  <!-- 月份切换 -->
+  <view class="month-header card">
+    <view class="month-nav" bindtap="onPrevMonth">
+      <text class="nav-arrow">◀</text>
+    </view>
+    <view class="month-title">{{year}}年{{month}}月</view>
+    <view class="month-nav" bindtap="onNextMonth">
+      <text class="nav-arrow">▶</text>
+    </view>
+  </view>
+
+  <!-- 考勤统计 -->
+  <view class="stats-bar card">
+    <view class="stat-item">
+      <view class="stat-dot dot-normal"></view>
+      <text class="stat-label">正常</text>
+      <text class="stat-count">{{stats.normal}}</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-dot dot-late"></view>
+      <text class="stat-label">迟到</text>
+      <text class="stat-count">{{stats.late}}</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-dot dot-early"></view>
+      <text class="stat-label">早退</text>
+      <text class="stat-count">{{stats.early}}</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-dot dot-overtime"></view>
+      <text class="stat-label">加班</text>
+      <text class="stat-count">{{stats.overtime}}</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-dot dot-absent"></view>
+      <text class="stat-label">缺勤</text>
+      <text class="stat-count">{{stats.absent}}</text>
+    </view>
+  </view>
+
+  <!-- 日历 -->
+  <view class="calendar card">
+    <!-- 星期头 -->
+    <view class="week-header">
+      <view class="week-day weekend">日</view>
+      <view class="week-day">一</view>
+      <view class="week-day">二</view>
+      <view class="week-day">三</view>
+      <view class="week-day">四</view>
+      <view class="week-day">五</view>
+      <view class="week-day weekend">六</view>
+    </view>
+
+    <!-- 日期格子 -->
+    <view class="week-row" wx:for="{{weeks}}" wx:key="index">
+      <view
+        class="day-cell {{item ? '' : 'empty'}} {{item.isToday ? 'today' : ''}} {{item.status ? 'status-' + item.status : ''}} {{selectedDate === item.date ? 'selected' : ''}}"
+        wx:for="{{item}}"
+        wx:key="date"
+        wx:for-item="item"
+        data-date="{{item ? item.date : ''}}"
+        bindtap="onDateTap"
+      >
+        <view wx:if="{{item}}" class="day-content">
+          <text class="day-number">{{item.day}}</text>
+          <view wx:if="{{item.status}}" class="day-status-dot"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日期详情 -->
+  <view class="detail-card card" wx:if="{{selectedDate}}">
+    <view class="detail-header">
+      <view class="detail-date">{{selectedDate}}</view>
+      <view wx:if="{{selectedRecord}}" class="tag tag-{{selectedRecord.status === 'normal' ? 'success' : selectedRecord.status === 'late' ? 'warning' : selectedRecord.status === 'early' ? 'warning' : selectedRecord.status === 'overtime' ? 'info' : 'danger'}}">
+        {{selectedRecord.status === 'normal' ? '正常' : selectedRecord.status === 'late' ? '迟到' : selectedRecord.status === 'early' ? '早退' : selectedRecord.status === 'overtime' ? '加班' : selectedRecord.status === 'absent' ? '缺勤' : '未打卡'}}
+      </view>
+    </view>
+
+    <view wx:if="{{selectedRecord}}" class="detail-body">
+      <view class="detail-row">
+        <text class="detail-label">上班打卡</text>
+        <text class="detail-value">{{selectedRecord.checkInTime ? selectedRecord.checkInTime.substring(11, 19) : '--'}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">下班打卡</text>
+        <text class="detail-value">{{selectedRecord.checkOutTime ? selectedRecord.checkOutTime.substring(11, 19) : '--'}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedRecord.isAbnormal}}">
+        <text class="detail-label">异常标记</text>
+        <text class="detail-value text-danger">{{selectedRecord.abnormalReason || '位置异常'}}</text>
+      </view>
+
+      <!-- 工作内容 -->
+      <view class="divider"></view>
+      <view class="work-content-section">
+        <view class="flex-between">
+          <text class="detail-label">工作内容</text>
+          <text class="edit-btn" bindtap="onEditWorkContent" wx:if="{{!editingWorkContent}}">编辑</text>
+        </view>
+        <textarea
+          wx:if="{{editingWorkContent}}"
+          class="work-content-input"
+          placeholder="请填写今天的工作内容..."
+          value="{{workContent}}"
+          bindinput="onWorkContentInput"
+          maxlength="500"
+          auto-height
+        ></textarea>
+        <view wx:else class="work-content-text">
+          {{workContent || '暂无工作内容'}}
+        </view>
+        <button
+          wx:if="{{editingWorkContent}}"
+          class="btn-primary btn-block save-btn"
+          bindtap="onSaveWorkContent"
+        >
+          保存
+        </button>
+      </view>
+    </view>
+
+    <view wx:else class="detail-empty">
+      当天无打卡记录
+    </view>
+  </view>
+</view>

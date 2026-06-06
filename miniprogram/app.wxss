@@ -1,0 +1,249 @@
+/* ============================================
+   全局样式 - 公司打卡考勤 & 工资小程序
+   ============================================ */
+
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: #333;
+  background-color: #f5f6fa;
+  line-height: 1.6;
+}
+
+/* 主题色变量（通过 JS 动态修改） */
+page {
+  --primary-color: #4A90D9;
+  --primary-light: #E8F0FE;
+  --primary-dark: #357ABD;
+  --success-color: #52C41A;
+  --warning-color: #FAAD14;
+  --danger-color: #FF4D4F;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --text-hint: #999999;
+  --bg-color: #f5f6fa;
+  --card-bg: #ffffff;
+  --border-color: #eeeeee;
+  --shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 容器 */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 卡片 */
+.card {
+  background: var(--card-bg);
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 6rpx;
+  height: 28rpx;
+  background: var(--primary-color);
+  border-radius: 3rpx;
+  margin-right: 16rpx;
+}
+
+/* 按钮 */
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 12rpx;
+  padding: 24rpx 48rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-secondary {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 12rpx;
+  padding: 24rpx 48rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.btn-danger {
+  background: #FFF1F0;
+  color: var(--danger-color);
+  border: none;
+  border-radius: 12rpx;
+  padding: 24rpx 48rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 输入框 */
+.input-group {
+  margin-bottom: 24rpx;
+}
+
+.input-label {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: 8rpx;
+}
+
+.input-field {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg-color);
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: var(--text-color);
+  box-sizing: border-box;
+  border: 2rpx solid transparent;
+  transition: border-color 0.2s;
+}
+
+.input-field:focus {
+  border-color: var(--primary-color);
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.tag-success { background: #F6FFED; color: #52C41A; }
+.tag-warning { background: #FFFBE6; color: #FAAD14; }
+.tag-danger { background: #FFF1F0; color: #FF4D4F; }
+.tag-info { background: #E6F7FF; color: #1890FF; }
+.tag-primary { background: var(--primary-light); color: var(--primary-color); }
+
+/* 分隔线 */
+.divider {
+  height: 1rpx;
+  background: var(--border-color);
+  margin: 24rpx 0;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  color: var(--text-hint);
+}
+
+.empty-state .empty-icon {
+  font-size: 96rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-state .empty-text {
+  font-size: 28rpx;
+}
+
+/* 加载 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: var(--text-hint);
+}
+
+/* Flex 布局 */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-1 { flex: 1; }
+
+/* 文本 */
+.text-primary { color: var(--primary-color); }
+.text-success { color: var(--success-color); }
+.text-warning { color: var(--warning-color); }
+.text-danger { color: var(--danger-color); }
+.text-hint { color: var(--text-hint); }
+.text-bold { font-weight: 600; }
+
+/* 金额 */
+.amount {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.amount-small {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* 头像 */
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--primary-color);
+  overflow: hidden;
+}
+
+.avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 安全区域 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

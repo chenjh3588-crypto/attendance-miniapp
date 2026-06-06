@@ -1,0 +1,31 @@
+<view class="container company-select-page">
+  <view class="page-title">选择公司</view>
+
+  <view class="company-list" wx:if="{{!loading}}">
+    <view
+      class="company-item card"
+      wx:for="{{companies}}"
+      wx:key="_id"
+      data-company="{{item}}"
+      bindtap="onSelectCompany"
+    >
+      <view class="company-logo-sm">
+        <image wx:if="{{item.logo}}" src="{{item.logo}}" mode="aspectFill"></image>
+        <text wx:else>{{item.name[0]}}</text>
+      </view>
+      <view class="company-item-info">
+        <view class="company-item-name">{{item.name}}</view>
+        <view class="company-item-role">
+          <view class="tag tag-{{item.employeeRole === 'admin' ? 'primary' : 'info'}}">
+            {{item.employeeRole === 'admin' ? '管理员' : '员工'}}
+          </view>
+        </view>
+      </view>
+      <view class="company-arrow">→</view>
+    </view>
+  </view>
+
+  <view class="create-company-btn" bindtap="onCreateCompany">
+    + 创建新公司
+  </view>
+</view>

@@ -1,0 +1,167 @@
+.profile-page {
+  padding-top: 0;
+}
+
+/* 头像区域 */
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0 48rpx;
+  background: #000;
+  margin: -24rpx -24rpx 32rpx -24rpx;
+  border-radius: 0 0 32rpx 32rpx;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 20rpx;
+}
+
+.avatar-large {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.avatar-placeholder-large {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.avatar-placeholder-text {
+  font-size: 72rpx;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: 2rpx;
+}
+
+.avatar-edit-hint {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 52rpx;
+  height: 52rpx;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+.edit-icon {
+  font-size: 36rpx;
+  color: #000;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+.avatar-tip {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 2rpx;
+}
+
+/* 信息卡片 */
+.info-card {
+  padding: 28rpx 32rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.info-row + .info-row {
+  border-top: 1rpx solid #eee;
+}
+
+.info-label {
+  font-size: 26rpx;
+  color: #999;
+  letter-spacing: 1rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 昵称编辑 */
+.nickname-card {
+  padding: 32rpx;
+}
+
+.nickname-label {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+  letter-spacing: 1rpx;
+}
+
+.nickname-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.nickname-input {
+  flex: 1;
+  height: 80rpx;
+  background: #f8f8f8;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: #000;
+  letter-spacing: 1rpx;
+}
+
+.nickname-input:focus {
+  border-color: #000;
+}
+
+.nickname-save-btn {
+  width: 140rpx;
+  height: 80rpx;
+  background: #000;
+  color: #fff;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  letter-spacing: 2rpx;
+  transition: opacity 0.2s;
+}
+
+.nickname-save-btn:active {
+  opacity: 0.7;
+}
+
+.nickname-save-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.nickname-hint {
+  font-size: 22rpx;
+  color: #bbb;
+  margin-top: 16rpx;
+  letter-spacing: 1rpx;
+}

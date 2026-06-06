@@ -1,0 +1,79 @@
+<view class="container admin-page">
+  <view class="action-bar">
+    <view class="admin-tabs">
+      <view class="admin-tab" bindtap="goToEmployees">员工管理</view>
+      <view class="admin-tab active">考勤记录</view>
+      <view class="admin-tab" bindtap="goToConfig">配置中心</view>
+      <view class="admin-tab" bindtap="goToLogs">操作日志</view>
+    </view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="card date-picker-card">
+    <view class="date-picker-label">选择日期</view>
+    <picker mode="date" value="{{selectedDate}}" bindchange="onDateChange">
+      <view class="date-picker-value">{{selectedDate}} ▼</view>
+    </picker>
+  </view>
+
+  <!-- 考勤列表 -->
+  <view wx:if="{{!loading}}" class="attendance-list">
+    <view class="attendance-card card" wx:for="{{attendanceList}}" wx:key="employeeId">
+      <view class="attendance-header">
+        <view class="attendance-employee">
+          <view class="avatar">{{item.employeeName[0]}}</view>
+          <view>
+            <view class="attendance-name">{{item.employeeName}}</view>
+            <view class="tag tag-{{item.employeeType === '正式' ? 'success' : 'warning'}}">{{item.employeeType}}</view>
+          </view>
+        </view>
+        <view class="tag tag-{{item.status === 'normal' ? 'success' : item.status === 'late' ? 'warning' : item.status === 'early' ? 'warning' : item.status === 'overtime' ? 'info' : 'danger'}}">
+          {{item.status === 'normal' ? '正常' : item.status === 'late' ? '迟到' : item.status === 'early' ? '早退' : item.status === 'overtime' ? '加班' : '缺勤'}}
+        </view>
+      </view>
+
+      <view class="attendance-times">
+        <view class="time-item">
+          <text class="time-label">上班</text>
+          <text class="time-value">{{item.checkInTime}}</text>
+        </view>
+        <view class="time-item">
+          <text class="time-label">下班</text>
+          <text class="time-value">{{item.checkOutTime}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{item.isAbnormal}}" class="abnormal-tag">
+        ⚠️ 异常打卡
+      </view>
+
+      <view wx:if="{{item.record}}" class="edit-action" data-index="{{index}}" bindtap="onShowEditModal">
+        修改时间
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditModal}}" bindtap="onHideEditModal"></view>
+  <view class="modal-content" wx:if="{{showEditModal}}">
+    <view class="modal-title">修改打卡时间</view>
+    <view class="modal-body">
+      <view class="input-group">
+        <text class="input-label">上班时间</text>
+        <picker mode="time" value="{{editForm.checkInTime}}" data-field="checkInTime" bindchange="onEditFormInput">
+          <view class="input-field time-picker">{{editForm.checkInTime || '选择时间'}}</view>
+        </picker>
+      </view>
+      <view class="input-group">
+        <text class="input-label">下班时间</text>
+        <picker mode="time" value="{{editForm.checkOutTime}}" data-field="checkOutTime" bindchange="onEditFormInput">
+          <view class="input-field time-picker">{{editForm.checkOutTime || '选择时间'}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-secondary modal-btn" bindtap="onHideEditModal">取消</view>
+      <view class="btn-primary modal-btn" bindtap="onSaveEdit">保存</view>
+    </view>
+  </view>
+</view>

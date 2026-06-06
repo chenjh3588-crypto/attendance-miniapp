@@ -1,0 +1,6 @@
+<view class="container loading-page">
+  <view class="loading-content" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载...</text>
+  </view>
+</view>

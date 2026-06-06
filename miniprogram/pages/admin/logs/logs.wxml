@@ -1,0 +1,35 @@
+<view class="container admin-page">
+  <view class="action-bar">
+    <view class="admin-tabs">
+      <view class="admin-tab" bindtap="goToEmployees">员工管理</view>
+      <view class="admin-tab" bindtap="goToAttendance">考勤记录</view>
+      <view class="admin-tab" bindtap="goToConfig">配置中心</view>
+      <view class="admin-tab active">操作日志</view>
+    </view>
+  </view>
+
+  <!-- 日志列表 -->
+  <view wx:if="{{!loading}}" class="log-list">
+    <view class="log-card card" wx:for="{{logs}}" wx:key="_id">
+      <view class="log-header">
+        <view class="tag tag-primary">{{item.actionLabel}}</view>
+        <text class="log-time">{{item.timeDisplay}}</text>
+      </view>
+      <view class="log-detail">
+        <text class="log-operator">操作人：{{item.operatorName}}</text>
+        <text class="log-content" wx:if="{{item.detail}}">{{item.detail}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore}}" bindtap="onLoadMore">
+    加载更多
+  </view>
+
+  <!-- 无数据 -->
+  <view wx:if="{{!loading && logs.length === 0}}" class="empty-state">
+    <view class="empty-icon">📋</view>
+    <view class="empty-text">暂无操作日志</view>
+  </view>
+</view>

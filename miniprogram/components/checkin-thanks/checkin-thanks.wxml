@@ -1,0 +1,30 @@
+<!-- 全屏打卡感谢页 - 黑白简约超写实主义 -->
+<view
+  class="thanks-overlay {{visible ? 'show' : ''}}"
+  bindtap="onTapDismiss"
+  wx:if="{{visible || animating}}"
+>
+  <view class="thanks-content">
+    <!-- 极细横线 -->
+    <view class="thanks-line"></view>
+
+    <!-- 感谢文字 -->
+    <view class="thanks-text-wrapper">
+      <text class="thanks-prefix">感谢你对</text>
+      <text class="thanks-company">{{companyName}}</text>
+      <text class="thanks-suffix">的贡献</text>
+    </view>
+
+    <!-- 打卡类型 -->
+    <view class="thanks-type">{{checkType === 'in' ? '上班打卡成功' : '下班打卡成功'}}</view>
+
+    <!-- 时间 -->
+    <view class="thanks-time">{{currentTime}}</view>
+
+    <!-- 底部极细横线 -->
+    <view class="thanks-line-bottom"></view>
+  </view>
+
+  <!-- 触摸退出提示 -->
+  <view class="thanks-dismiss">触摸屏幕退出</view>
+</view>

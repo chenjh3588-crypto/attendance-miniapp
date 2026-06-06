@@ -1,0 +1,114 @@
+<view class="container guild-page">
+  <!-- 选择步骤 -->
+  <view class="choose-step" wx:if="{{step === 'choose'}}">
+    <view class="hero-section">
+      <view class="hero-icon">📋</view>
+      <view class="hero-title">考勤打卡 & 工资</view>
+      <view class="hero-desc">一站式考勤管理与工资计算</view>
+    </view>
+
+    <view class="action-cards">
+      <view class="action-card" bindtap="onCreateCompany">
+        <view class="action-icon">🏢</view>
+        <view class="action-title">创建公司</view>
+        <view class="action-desc">我是老板/管理员，创建公司并邀请员工加入</view>
+        <view class="action-arrow">→</view>
+      </view>
+
+      <view class="action-card" bindtap="onJoinCompany">
+        <view class="action-icon">👤</view>
+        <view class="action-title">加入公司</view>
+        <view class="action-desc">我有邀请码，加入已有的公司</view>
+        <view class="action-arrow">→</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创建公司步骤 -->
+  <view class="create-step" wx:if="{{step === 'create'}}">
+    <view class="step-header">
+      <view class="back-btn" bindtap="goBack">← 返回</view>
+      <view class="step-title">创建公司</view>
+    </view>
+
+    <!-- Logo 上传 -->
+    <view class="card">
+      <view class="card-title">公司 Logo</view>
+      <view class="logo-upload" bindtap="onChooseLogo">
+        <image wx:if="{{companyLogo}}" src="{{companyLogo}}" mode="aspectFill" class="logo-preview"></image>
+        <view wx:else class="logo-placeholder">
+          <text class="logo-plus">+</text>
+          <text class="logo-text">上传 Logo</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 公司名称 -->
+    <view class="card">
+      <view class="card-title">公司名称</view>
+      <input
+        class="input-field"
+        placeholder="请输入公司名称"
+        value="{{companyName}}"
+        bindinput="onCompanyNameInput"
+        maxlength="30"
+      />
+    </view>
+
+    <!-- 主题色 -->
+    <view class="card">
+      <view class="card-title">主题色</view>
+      <view class="color-options">
+        <view
+          wx:for="{{themeColors}}"
+          wx:key="*this"
+          class="color-option {{themeColor === item ? 'active' : ''}}"
+          style="background: {{item}}"
+          data-color="{{item}}"
+          bindtap="onThemeColorSelect"
+        >
+          <view wx:if="{{themeColor === item}}" class="color-check">✓</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交 -->
+    <button
+      class="btn-primary btn-block"
+      bindtap="onSubmitCreate"
+      disabled="{{submitting}}"
+      loading="{{submitting}}"
+    >
+      创建公司
+    </button>
+  </view>
+
+  <!-- 加入公司步骤 -->
+  <view class="join-step" wx:if="{{step === 'join'}}">
+    <view class="step-header">
+      <view class="back-btn" bindtap="goBack">← 返回</view>
+      <view class="step-title">加入公司</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">输入邀请码</view>
+      <view class="invite-hint">请向公司管理员获取6位邀请码</view>
+      <input
+        class="input-field invite-input"
+        placeholder="请输入邀请码"
+        value="{{inviteCode}}"
+        bindinput="onInviteCodeInput"
+        maxlength="6"
+      />
+    </view>
+
+    <button
+      class="btn-primary btn-block"
+      bindtap="onSubmitJoin"
+      disabled="{{submitting}}"
+      loading="{{submitting}}"
+    >
+      加入公司
+    </button>
+  </view>
+</view>

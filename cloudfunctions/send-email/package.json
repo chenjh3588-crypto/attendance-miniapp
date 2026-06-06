@@ -1,0 +1,9 @@
+{
+  "name": "send-email",
+  "version": "1.0.0",
+  "description": "发送工资报表邮件",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

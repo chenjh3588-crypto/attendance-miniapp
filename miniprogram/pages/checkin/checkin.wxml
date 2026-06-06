@@ -1,0 +1,82 @@
+<view class="container checkin-page">
+  <!-- 员工个人标签 + 公司信息头部 -->
+  <view class="company-header" style="background: {{themeColor}}">
+    <view class="header-top">
+      <view class="company-info">
+        <image wx:if="{{companyLogo}}" src="{{companyLogo}}" class="company-logo" mode="aspectFill"></image>
+        <view wx:else class="company-logo-placeholder">{{companyName[0]}}</view>
+        <view class="company-name">{{companyName}}</view>
+      </view>
+      <view class="profile-entry" bindtap="goToProfile">
+        <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="profile-avatar" mode="aspectFill"></image>
+        <view wx:else class="profile-avatar-placeholder">
+          {{nickname[0] || employeeName[0] || '?'}}
+        </view>
+        <view class="profile-nickname">{{nickname || employeeName || '未设置'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日期和时间 -->
+  <view class="datetime-card card">
+    <view class="date-text">{{currentDate}} {{currentDay}}</view>
+    <view class="time-text">{{currentTime}}</view>
+  </view>
+
+  <!-- 打卡按钮区域 -->
+  <view class="checkin-actions">
+    <!-- 上班打卡 -->
+    <view
+      class="checkin-btn checkin-in {{hasCheckIn ? 'checked' : ''}}"
+      style="{{hasCheckIn ? '' : 'background: ' + themeColor}}"
+      bindtap="onCheckIn"
+    >
+      <view class="checkin-btn-icon">🌅</view>
+      <view class="checkin-btn-text">{{hasCheckIn ? '已打卡' : '上班打卡'}}</view>
+      <view class="checkin-btn-time" wx:if="{{hasCheckIn}}">{{checkInTime}}</view>
+    </view>
+
+    <!-- 下班打卡 -->
+    <view
+      class="checkin-btn checkin-out {{hasCheckOut ? 'checked' : ''}}"
+      style="{{hasCheckOut ? '' : 'background: ' + themeColor}}"
+      bindtap="onCheckOut"
+    >
+      <view class="checkin-btn-icon">🌙</view>
+      <view class="checkin-btn-text">{{hasCheckOut ? '已打卡' : '下班打卡'}}</view>
+      <view class="checkin-btn-time" wx:if="{{hasCheckOut}}">{{checkOutTime}}</view>
+    </view>
+  </view>
+
+  <!-- 位置信息 -->
+  <view class="card location-card">
+    <view class="location-row">
+      <view class="location-icon">📍</view>
+      <view class="location-text">{{locationText}}</view>
+      <view class="tag {{isInArea ? 'tag-success' : 'tag-danger'}}">
+        {{isInArea ? '范围内' : '范围外'}}
+      </view>
+    </view>
+    <view class="location-row" wx:if="{{currentWifi}}">
+      <view class="location-icon">📶</view>
+      <view class="location-text">{{currentWifi}}</view>
+      <view class="tag tag-info">已连接</view>
+    </view>
+  </view>
+
+  <!-- 异常提示 -->
+  <view class="card abnormal-card" wx:if="{{isAbnormal}}">
+    <view class="abnormal-warning">⚠️ 异常打卡提示</view>
+    <view class="abnormal-reason">{{abnormalReason}}</view>
+    <view class="abnormal-hint">您的打卡将被标记为异常，管理员将收到通知</view>
+  </view>
+
+  <!-- 全屏感谢页 -->
+  <checkin-thanks
+    visible="{{showThanks}}"
+    companyName="{{companyName}}"
+    checkType="{{thanksCheckType}}"
+    currentTime="{{thanksTime}}"
+    bind:dismiss="onThanksDismiss"
+  ></checkin-thanks>
+</view>

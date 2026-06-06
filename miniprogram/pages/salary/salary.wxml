@@ -1,0 +1,61 @@
+<view class="container salary-page">
+  <!-- 月份切换 -->
+  <view class="month-header card">
+    <view class="month-nav" bindtap="onPrevMonth">
+      <text class="nav-arrow">◀</text>
+    </view>
+    <view class="month-title">{{year}}年{{month}}月</view>
+    <view class="month-nav" bindtap="onNextMonth">
+      <text class="nav-arrow">▶</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <!-- 无数据 -->
+  <view wx:elif="{{!hasData}}" class="empty-state">
+    <view class="empty-icon">💰</view>
+    <view class="empty-text">暂无工资数据</view>
+  </view>
+
+  <!-- 工资数据 -->
+  <view wx:else>
+    <!-- 实发工资 -->
+    <view class="card salary-total">
+      <view class="salary-total-label">实发工资</view>
+      <view class="salary-total-amount">
+        <text class="amount-prefix">¥</text>
+        <text class="amount">{{actualPay}}</text>
+      </view>
+      <view class="salary-total-sub">应付工资：¥{{grossPay}}</view>
+    </view>
+
+    <!-- 动态工资条 -->
+    <block wx:for="{{salaryRows}}" wx:key="key">
+      <!-- 分组标题 -->
+      <view wx:if="{{item.isGroupTitle}}" class="card group-title-card">
+        <view class="card-title">{{item.groupLabel}}</view>
+      </view>
+
+      <!-- 普通行（非高亮） -->
+      <view wx:elif="{{!item.highlight}}" class="card salary-row-card">
+        <view class="detail-row">
+          <text class="detail-label">{{item.label}}</text>
+          <text class="detail-value {{item.valueClass}}">{{item.value}}</text>
+        </view>
+      </view>
+
+      <!-- 高亮行 -->
+      <view wx:else class="card highlight-row-card">
+        <view class="detail-row highlight">
+          <text class="detail-label">{{item.label}}</text>
+          <text class="detail-value amount-highlight">{{item.value}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

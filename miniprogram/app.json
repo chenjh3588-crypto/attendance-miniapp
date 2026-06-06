@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/guild/guild",
+    "pages/company/company",
+    "pages/checkin/checkin",
+    "pages/calendar/calendar",
+    "pages/salary/salary",
+    "pages/profile/profile",
+    "pages/admin/employees/employees",
+    "pages/admin/attendance/attendance",
+    "pages/admin/config/config",
+    "pages/admin/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4A90D9",
+    "navigationBarTitleText": "考勤打卡",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/checkin/checkin",
+        "text": "打卡",
+        "iconPath": "images/tab-checkin.png",
+        "selectedIconPath": "images/tab-checkin-active.png"
+      },
+      {
+        "pagePath": "pages/calendar/calendar",
+        "text": "考勤",
+        "iconPath": "images/tab-calendar.png",
+        "selectedIconPath": "images/tab-calendar-active.png"
+      },
+      {
+        "pagePath": "pages/salary/salary",
+        "text": "工资",
+        "iconPath": "images/tab-salary.png",
+        "selectedIconPath": "images/tab-salary-active.png"
+      },
+      {
+        "pagePath": "pages/admin/employees/employees",
+        "text": "管理",
+        "iconPath": "images/tab-admin.png",
+        "selectedIconPath": "images/tab-admin-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "cloud": true,
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseAddress"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "打卡需要获取您的位置信息以验证是否在公司范围内"
+    }
+  }
+}

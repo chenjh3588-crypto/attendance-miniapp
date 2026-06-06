@@ -1,0 +1,400 @@
+<view class="container admin-page">
+  <view class="action-bar">
+    <view class="admin-tabs">
+      <view class="admin-tab" bindtap="goToEmployees">员工管理</view>
+      <view class="admin-tab" bindtap="goToAttendance">考勤记录</view>
+      <view class="admin-tab active">配置中心</view>
+      <view class="admin-tab" bindtap="goToLogs">操作日志</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading}}">
+    <!-- 邀请码 -->
+    <view class="card invite-card">
+      <view class="card-title">公司邀请码</view>
+      <view class="invite-code-display">{{inviteCode}}</view>
+      <view class="invite-hint">分享此邀请码给员工加入公司</view>
+    </view>
+
+    <!-- 部门管理 -->
+    <view class="card">
+      <view class="card-title">部门管理</view>
+      <view class="tag-list">
+        <view class="dept-tag" wx:for="{{departments}}" wx:key="*this">
+          <text>{{item}}</text>
+          <text class="dept-remove" data-index="{{index}}" bindtap="onRemoveDepartment">x</text>
+        </view>
+      </view>
+      <view class="dept-add">
+        <input class="input-field" placeholder="输入部门名称" value="{{newDepartment}}" bindinput="onDepartmentInput" />
+        <view class="btn-secondary add-dept-btn" bindtap="onAddDepartment">添加</view>
+      </view>
+    </view>
+
+    <!-- 工作时间（可折叠） -->
+    <view class="card">
+      <view class="section-header" data-section="workTime" bindtap="onToggleSection">
+        <view class="card-title">工作时间</view>
+        <text class="expand-icon">{{expandedSections.workTime ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.workTime}}">
+        <view class="config-row">
+          <text class="config-label">上班时间</text>
+          <picker mode="time" value="{{form.standardWorkStart}}" data-field="standardWorkStart" bindchange="onFormInput">
+            <view class="config-value">{{form.standardWorkStart}}</view>
+          </picker>
+        </view>
+        <view class="config-row">
+          <text class="config-label">下班时间</text>
+          <picker mode="time" value="{{form.standardWorkEnd}}" data-field="standardWorkEnd" bindchange="onFormInput">
+            <view class="config-value">{{form.standardWorkEnd}}</view>
+          </picker>
+        </view>
+        <view class="config-row">
+          <text class="config-label">应工作小时数/月</text>
+          <input class="config-input" type="digit" value="{{form.monthlyWorkHours}}" data-field="monthlyWorkHours" bindinput="onFormInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">应工作天数/月</text>
+          <input class="config-input" type="digit" value="{{form.monthlyWorkDays}}" data-field="monthlyWorkDays" bindinput="onFormInput" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 加班费率 -->
+    <view class="card">
+      <view class="section-header" data-section="overtime" bindtap="onToggleSection">
+        <view class="card-title">加班费率</view>
+        <text class="expand-icon">{{expandedSections.overtime ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.overtime}}">
+        <view class="config-row">
+          <text class="config-label">平时加班-正式（元/h）</text>
+          <input class="config-input" type="digit" value="{{form.weekdayOvertimeRateFulltime}}" data-field="weekdayOvertimeRateFulltime" bindinput="onFormInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">平时加班-实习（元/h）</text>
+          <input class="config-input" type="digit" value="{{form.weekdayOvertimeRateIntern}}" data-field="weekdayOvertimeRateIntern" bindinput="onFormInput" />
+        </view>
+        <view class="divider"></view>
+        <view class="config-row">
+          <text class="config-label">假日加班-正式（元/h）</text>
+          <input class="config-input" type="digit" value="{{form.holidayOvertimeRateFulltime}}" data-field="holidayOvertimeRateFulltime" bindinput="onFormInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">假日加班-实习（元/h）</text>
+          <input class="config-input" type="digit" value="{{form.holidayOvertimeRateIntern}}" data-field="holidayOvertimeRateIntern" bindinput="onFormInput" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 餐补规则 -->
+    <view class="card">
+      <view class="section-header" data-section="meal" bindtap="onToggleSection">
+        <view class="card-title">加班餐补规则</view>
+        <text class="expand-icon">{{expandedSections.meal ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.meal}}">
+        <view class="config-row">
+          <text class="config-label">工作日餐补（元）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekdayAmount}}" data-field="weekdayAmount" bindinput="onMealRuleInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">工作日加班门槛（h）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekdayThreshold}}" data-field="weekdayThreshold" bindinput="onMealRuleInput" />
+        </view>
+        <view class="divider"></view>
+        <view class="config-row">
+          <text class="config-label">周日全天餐补（元）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekendFullAmount}}" data-field="weekendFullAmount" bindinput="onMealRuleInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">周日半天餐补（元）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekendHalfAmount}}" data-field="weekendHalfAmount" bindinput="onMealRuleInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">周日全天门槛（h）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekendFullThreshold}}" data-field="weekendFullThreshold" bindinput="onMealRuleInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">周日半天门槛（h）</text>
+          <input class="config-input" type="digit" value="{{form.mealSubsidyRules.weekendHalfThreshold}}" data-field="weekendHalfThreshold" bindinput="onMealRuleInput" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 工龄工资 -->
+    <view class="card">
+      <view class="section-header" data-section="seniority" bindtap="onToggleSection">
+        <view class="card-title">工龄工资</view>
+        <text class="expand-icon">{{expandedSections.seniority ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.seniority}}">
+        <view class="config-row">
+          <text class="config-label">基础工龄工资（元）</text>
+          <input class="config-input" type="digit" value="{{form.seniorityRules.baseAmount}}" data-field="baseAmount" bindinput="onSeniorityInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">每年递增（元）</text>
+          <input class="config-input" type="digit" value="{{form.seniorityRules.perYear}}" data-field="perYear" bindinput="onSeniorityInput" />
+        </view>
+        <view class="config-hint">满1年后开始发放：基础金额 + (工龄年数-1) × 每年递增</view>
+      </view>
+    </view>
+
+    <!-- 社保与个税 -->
+    <view class="card">
+      <view class="section-header" data-section="socialTax" bindtap="onToggleSection">
+        <view class="card-title">社保与个税</view>
+        <text class="expand-icon">{{expandedSections.socialTax ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.socialTax}}">
+        <view class="config-row">
+          <text class="config-label">社保个人缴纳（元/月）</text>
+          <input class="config-input" type="digit" value="{{form.socialInsurancePersonal}}" data-field="socialInsurancePersonal" bindinput="onFormInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">个税起征点（元）</text>
+          <input class="config-input" type="digit" value="{{form.taxThreshold}}" data-field="taxThreshold" bindinput="onFormInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">专项附加扣除（元）</text>
+          <input class="config-input" type="digit" value="{{form.specialDeduction}}" data-field="specialDeduction" bindinput="onFormInput" />
+        </view>
+        <view class="config-hint">个税按中国累进税率自动计算</view>
+      </view>
+    </view>
+
+    <!-- 请假扣款 -->
+    <view class="card">
+      <view class="section-header" data-section="leave" bindtap="onToggleSection">
+        <view class="card-title">请假扣款规则</view>
+        <text class="expand-icon">{{expandedSections.leave ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.leave}}">
+        <view class="config-row">
+          <text class="config-label">事假扣款倍率</text>
+          <input class="config-input" type="digit" value="{{form.leaveRules.personalLeaveRate}}" data-field="personalLeaveRate" bindinput="onLeaveRuleInput" />
+        </view>
+        <view class="config-row">
+          <text class="config-label">缺勤扣款倍率</text>
+          <input class="config-input" type="digit" value="{{form.leaveRules.absentRate}}" data-field="absentRate" bindinput="onLeaveRuleInput" />
+        </view>
+        <view class="config-hint">扣款 = 时薪 × 小时数 × 倍率</view>
+      </view>
+    </view>
+
+    <!-- 罚款规则 -->
+    <view class="card">
+      <view class="section-header" data-section="penalty" bindtap="onToggleSection">
+        <view class="card-title">其他罚款规则</view>
+        <text class="expand-icon">{{expandedSections.penalty ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.penalty}}">
+        <view class="penalty-list">
+          <view class="penalty-rule" wx:for="{{form.penaltyRules}}" wx:key="type">
+            <view class="penalty-rule-header">
+              <view class="penalty-switch {{item.enabled ? 'on' : ''}}" data-index="{{index}}" bindtap="onPenaltyToggle">
+                {{item.enabled ? '开启' : '关闭'}}
+              </view>
+              <text class="penalty-name">{{item.name}}</text>
+              <text class="penalty-mode">{{item.mode === 'hourly' ? '按时薪' : '固定'}}</text>
+            </view>
+            <view class="penalty-rate-row">
+              <text class="config-label">{{item.mode === 'hourly' ? '倍数' : '金额(元)'}}</text>
+              <input class="config-input small" type="digit" value="{{item.rate}}" data-index="{{index}}" bindinput="onPenaltyRateInput" />
+              <view class="remove-btn" data-index="{{index}}" bindtap="onRemovePenaltyRule">删除</view>
+            </view>
+          </view>
+        </view>
+        <view class="add-penalty">
+          <view class="divider"></view>
+          <view class="input-group">
+            <text class="input-label">规则名称</text>
+            <input class="input-field" placeholder="如：缺勤扣款" value="{{newPenaltyName}}" bindinput="onNewPenaltyNameInput" />
+          </view>
+          <view class="input-group">
+            <text class="input-label">扣款方式</text>
+            <view class="radio-group">
+              <view class="radio-item {{newPenaltyMode === 'fixed' ? 'active' : ''}}" bindtap="onSetPenaltyMode" data-mode="fixed">固定</view>
+              <view class="radio-item {{newPenaltyMode === 'hourly' ? 'active' : ''}}" bindtap="onSetPenaltyMode" data-mode="hourly">按时薪</view>
+            </view>
+          </view>
+          <view class="input-group">
+            <text class="input-label">{{newPenaltyMode === 'fixed' ? '金额（元）' : '倍数'}}</text>
+            <input class="input-field" type="digit" placeholder="请输入" value="{{newPenaltyRate}}" bindinput="onNewPenaltyRateInput" />
+          </view>
+          <view class="btn-secondary btn-block" bindtap="onAddPenaltyRule">添加规则</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 工资条自定义 -->
+    <view class="card">
+      <view class="section-header" data-section="salaryFields" bindtap="onToggleSection">
+        <view class="card-title">工资条自定义</view>
+        <text class="expand-icon">{{expandedSections.salaryFields ? '▼' : '▶'}}</text>
+      </view>
+      <view wx:if="{{expandedSections.salaryFields}}">
+        <view class="config-hint" style="margin-bottom: 16rpx;">
+          自定义贵公司的工资条组成。不同公司工资条不同，可自由增删字段、修改名称。
+        </view>
+
+        <!-- 字段列表 -->
+        <block wx:for="{{salaryTemplate}}" wx:key="id">
+          <!-- 分组标题 -->
+          <view wx:if="{{item.group !== salaryTemplate[index-1].group}}" class="field-group-title">
+            {{item.group === 'attendance' ? '考勤' : item.group === 'salary' ? '薪资' : item.group === 'overtime' ? '加班' : item.group === 'bonus' ? '补贴与奖金' : item.group === 'deduction' ? '扣款' : '汇总'}}
+          </view>
+
+          <view class="field-config-row">
+            <!-- 类型标识 -->
+            <view class="field-type-tag {{item.type === 'auto' ? 'type-auto' : 'type-manual'}}">
+              {{item.type === 'auto' ? '自动' : '手填'}}
+            </view>
+
+            <!-- 字段名称 -->
+            <view class="field-label-area" data-id="{{item.id}}" bindtap="onShowEditFieldModal">
+              <text class="field-label-text">{{item.label}}</text>
+              <text class="field-highlight-icon" wx:if="{{item.highlight}}">★</text>
+            </view>
+
+            <!-- 操作按钮 -->
+            <view class="field-action-btns">
+              <view class="action-icon" data-id="{{item.id}}" bindtap="onToggleHighlight" title="高亮">★</view>
+              <view class="order-btn" data-id="{{item.id}}" bindtap="onMoveFieldUp">↑</view>
+              <view class="order-btn" data-id="{{item.id}}" bindtap="onMoveFieldDown">↓</view>
+              <view class="action-icon danger" data-id="{{item.id}}" bindtap="onDeleteField">x</view>
+            </view>
+          </view>
+        </block>
+
+        <view class="field-actions-bar">
+          <view class="btn-primary" bindtap="onShowAddFieldModal">+ 添加字段</view>
+          <view class="btn-secondary" bindtap="onResetTemplate">恢复默认</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 添加字段弹窗 -->
+    <view class="modal-mask" wx:if="{{showAddFieldModal}}" bindtap="onHideAddFieldModal"></view>
+    <view class="modal-content" wx:if="{{showAddFieldModal}}">
+      <view class="modal-title">添加工资条字段</view>
+      <view class="modal-body">
+        <view class="input-group">
+          <text class="input-label">字段名称 *</text>
+          <input class="input-field" placeholder="如：交通补贴" value="{{addFieldForm.label}}" data-field="label" bindinput="onAddFieldFormInput" />
+        </view>
+        <view class="input-group">
+          <text class="input-label">字段类型</text>
+          <view class="radio-group">
+            <view class="radio-item {{addFieldForm.type === 'manual' ? 'active' : ''}}" data-type="manual" bindtap="onAddFieldTypeChange">手动填写</view>
+            <view class="radio-item {{addFieldForm.type === 'auto' ? 'active' : ''}}" data-type="auto" bindtap="onAddFieldTypeChange">自动计算</view>
+          </view>
+        </view>
+
+        <!-- 手动填写字段：选择数据类型 -->
+        <view wx:if="{{addFieldForm.type === 'manual'}}" class="input-group">
+          <text class="input-label">数据类型</text>
+          <view class="radio-group">
+            <view class="radio-item {{addFieldForm.dataType === 'money' ? 'active' : ''}}" data-field="dataType" data-value="money" bindtap="onAddFieldFormInput">金额</view>
+            <view class="radio-item {{addFieldForm.dataType === 'number' ? 'active' : ''}}" data-field="dataType" data-value="number" bindtap="onAddFieldFormInput">数字</view>
+            <view class="radio-item {{addFieldForm.dataType === 'text' ? 'active' : ''}}" data-field="dataType" data-value="text" bindtap="onAddFieldFormInput">文本</view>
+          </view>
+        </view>
+
+        <!-- 自动计算字段：选择数据来源 -->
+        <view wx:if="{{addFieldForm.type === 'auto'}}" class="input-group">
+          <text class="input-label">数据来源</text>
+          <view class="source-list">
+            <view
+              class="source-option {{addFieldForm.source === item.source ? 'selected' : ''}}"
+              wx:for="{{availableAutoSources}}"
+              wx:key="source"
+              data-source="{{item.source}}"
+              bindtap="onAddFieldSourceChange"
+            >
+              <view class="source-name">{{item.desc}}</view>
+              <view class="source-type">({{item.dataType === 'money' ? '金额' : '数字'}})</view>
+            </view>
+          </view>
+        </view>
+
+        <view class="input-group">
+          <text class="input-label">所属分组</text>
+          <view class="radio-group">
+            <view class="radio-item {{addFieldForm.group === 'attendance' ? 'active' : ''}}" data-field="group" data-value="attendance" bindtap="onAddFieldFormInput">考勤</view>
+            <view class="radio-item {{addFieldForm.group === 'salary' ? 'active' : ''}}" data-field="group" data-value="salary" bindtap="onAddFieldFormInput">薪资</view>
+            <view class="radio-item {{addFieldForm.group === 'overtime' ? 'active' : ''}}" data-field="group" data-value="overtime" bindtap="onAddFieldFormInput">加班</view>
+            <view class="radio-item {{addFieldForm.group === 'bonus' ? 'active' : ''}}" data-field="group" data-value="bonus" bindtap="onAddFieldFormInput">奖补</view>
+            <view class="radio-item {{addFieldForm.group === 'deduction' ? 'active' : ''}}" data-field="group" data-value="deduction" bindtap="onAddFieldFormInput">扣款</view>
+            <view class="radio-item {{addFieldForm.group === 'summary' ? 'active' : ''}}" data-field="group" data-value="summary" bindtap="onAddFieldFormInput">汇总</view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-secondary modal-btn" bindtap="onHideAddFieldModal">取消</view>
+        <view class="btn-primary modal-btn" bindtap="onSubmitAddField">添加</view>
+      </view>
+    </view>
+
+    <!-- 编辑字段弹窗 -->
+    <view class="modal-mask" wx:if="{{showEditFieldModal}}" bindtap="onHideEditFieldModal"></view>
+    <view class="modal-content" wx:if="{{showEditFieldModal}}">
+      <view class="modal-title">编辑字段</view>
+      <view class="modal-body">
+        <view class="input-group">
+          <text class="input-label">字段名称</text>
+          <input class="input-field" placeholder="请输入名称" value="{{editFieldForm.label}}" data-field="label" bindinput="onEditFieldFormInput" />
+        </view>
+        <view class="input-group">
+          <text class="input-label">所属分组</text>
+          <view class="radio-group">
+            <view class="radio-item {{editFieldForm.group === 'attendance' ? 'active' : ''}}" data-field="group" data-value="attendance" bindtap="onEditFieldFormInput">考勤</view>
+            <view class="radio-item {{editFieldForm.group === 'salary' ? 'active' : ''}}" data-field="group" data-value="salary" bindtap="onEditFieldFormInput">薪资</view>
+            <view class="radio-item {{editFieldForm.group === 'overtime' ? 'active' : ''}}" data-field="group" data-value="overtime" bindtap="onEditFieldFormInput">加班</view>
+            <view class="radio-item {{editFieldForm.group === 'bonus' ? 'active' : ''}}" data-field="group" data-value="bonus" bindtap="onEditFieldFormInput">奖补</view>
+            <view class="radio-item {{editFieldForm.group === 'deduction' ? 'active' : ''}}" data-field="group" data-value="deduction" bindtap="onEditFieldFormInput">扣款</view>
+            <view class="radio-item {{editFieldForm.group === 'summary' ? 'active' : ''}}" data-field="group" data-value="summary" bindtap="onEditFieldFormInput">汇总</view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-secondary modal-btn" bindtap="onHideEditFieldModal">取消</view>
+        <view class="btn-primary modal-btn" bindtap="onSubmitEditField">保存</view>
+      </view>
+    </view>
+
+
+    <view class="card">
+      <view class="card-title">Wi-Fi 白名单</view>
+      <view class="wifi-list">
+        <view class="wifi-item" wx:for="{{companyConfig.wifiWhitelist}}" wx:key="*this">
+          <text class="wifi-name">{{item}}</text>
+          <view class="remove-btn" data-index="{{index}}" bindtap="onRemoveWifi">移除</view>
+        </view>
+      </view>
+      <view class="wifi-add">
+        <input class="input-field" placeholder="输入 Wi-Fi 名称" value="{{newWifi}}" bindinput="onWifiInput" />
+        <view class="btn-secondary" bindtap="onAddWifi" style="margin-top: 16rpx;">添加</view>
+      </view>
+    </view>
+
+    <!-- 公司定位 -->
+    <view class="card">
+      <view class="card-title">公司定位</view>
+      <view wx:if="{{companyConfig.workLocation}}" class="location-info">
+        <text>纬度：{{companyConfig.workLocation.latitude}}</text>
+        <text>经度：{{companyConfig.workLocation.longitude}}</text>
+        <text>范围：{{companyConfig.workLocation.radius}}米</text>
+      </view>
+      <view wx:else class="location-hint">未设置公司定位</view>
+      <view class="btn-secondary btn-block" bindtap="onSetLocation" style="margin-top: 16rpx;">
+        {{companyConfig.workLocation ? '重新设置定位' : '设置公司定位'}}
+      </view>
+    </view>
+
+    <!-- 保存 -->
+    <button class="btn-primary btn-block save-all-btn" bindtap="onSaveConfig">保存所有配置</button>
+  </view>
+</view>

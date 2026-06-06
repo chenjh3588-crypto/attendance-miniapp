@@ -1,0 +1,45 @@
+<view class="container profile-page">
+  <!-- 头像区域 -->
+  <view class="avatar-section" bindtap="onChooseAvatar">
+    <view class="avatar-wrapper">
+      <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="avatar-large" mode="aspectFill"></image>
+      <view wx:else class="avatar-placeholder-large">
+        <view class="avatar-placeholder-text">{{nickname[0] || employeeName[0] || '?'}}</view>
+      </view>
+      <view class="avatar-edit-hint">
+        <view class="edit-icon">+</view>
+      </view>
+    </view>
+    <view class="avatar-tip">点击更换头像</view>
+  </view>
+
+  <!-- 个人信息 -->
+  <view class="info-card card">
+    <view class="info-row">
+      <view class="info-label">姓名</view>
+      <view class="info-value">{{employeeName}}</view>
+    </view>
+    <view class="info-row" wx:if="{{department}}">
+      <view class="info-label">部门</view>
+      <view class="info-value">{{department}}</view>
+    </view>
+  </view>
+
+  <!-- 昵称编辑 -->
+  <view class="card nickname-card">
+    <view class="nickname-label">个人昵称</view>
+    <view class="nickname-row">
+      <input
+        class="nickname-input"
+        placeholder="给自己起个名字吧"
+        value="{{nickname}}"
+        bindinput="onNicknameInput"
+        maxlength="20"
+      />
+      <view class="nickname-save-btn {{saving ? 'disabled' : ''}}" bindtap="onSaveNickname">
+        {{saving ? '保存中' : '保存'}}
+      </view>
+    </view>
+    <view class="nickname-hint">昵称将在打卡页面显示</view>
+  </view>
+</view>

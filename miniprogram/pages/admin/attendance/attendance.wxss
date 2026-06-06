@@ -1,0 +1,94 @@
+.date-picker-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+}
+
+.date-picker-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.date-picker-value {
+  font-size: 28rpx;
+  color: var(--primary-color);
+  padding: 8rpx 20rpx;
+  background: var(--primary-light);
+  border-radius: 8rpx;
+}
+
+/* 考勤卡片 */
+.attendance-card {
+  padding: 24rpx 32rpx;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.attendance-employee {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.attendance-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 4rpx;
+}
+
+.attendance-times {
+  display: flex;
+  gap: 32rpx;
+  margin-bottom: 12rpx;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.time-label {
+  font-size: 24rpx;
+  color: var(--text-hint);
+}
+
+.time-value {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.abnormal-tag {
+  font-size: 22rpx;
+  color: var(--warning-color);
+  background: #FFF7E6;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  display: inline-block;
+  margin-bottom: 8rpx;
+}
+
+.edit-action {
+  font-size: 24rpx;
+  color: var(--primary-color);
+  text-align: right;
+  padding-top: 8rpx;
+  border-top: 1rpx solid var(--border-color);
+}
+
+.time-picker {
+  text-align: center;
+  line-height: 88rpx;
+}
+
+/* 复用 admin 页面样式 */
+@import '../employees/employees.wxss';

@@ -1,0 +1,40 @@
+.log-card {
+  padding: 20rpx 32rpx;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.log-time {
+  font-size: 22rpx;
+  color: var(--text-hint);
+}
+
+.log-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.log-operator {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.log-content {
+  font-size: 24rpx;
+  color: var(--text-hint);
+}
+
+.load-more {
+  text-align: center;
+  padding: 24rpx;
+  color: var(--primary-color);
+  font-size: 26rpx;
+}
+
+@import '../employees/employees.wxss';

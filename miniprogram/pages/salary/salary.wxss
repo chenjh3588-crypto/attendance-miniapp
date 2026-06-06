@@ -1,0 +1,44 @@
+.salary-page { padding-bottom: 40rpx; }
+
+.month-header { display: flex; align-items: center; justify-content: space-between; padding: 24rpx 32rpx; }
+.month-nav { padding: 12rpx 20rpx; }
+.nav-arrow { font-size: 28rpx; color: var(--primary-color); }
+.month-title { font-size: 34rpx; font-weight: 700; color: var(--text-color); }
+
+/* 实发工资 */
+.salary-total {
+  text-align: center; padding: 48rpx 32rpx;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark, #357ABD));
+  color: #fff; border-radius: 20rpx;
+}
+.salary-total-label { font-size: 28rpx; opacity: 0.85; margin-bottom: 12rpx; }
+.salary-total-amount { display: flex; align-items: baseline; justify-content: center; }
+.amount-prefix { font-size: 36rpx; font-weight: 600; margin-right: 8rpx; }
+.salary-total-amount .amount { font-size: 64rpx; font-weight: 700; color: #fff; }
+.salary-total-sub { font-size: 24rpx; opacity: 0.7; margin-top: 8rpx; }
+
+/* 动态工资条 */
+.group-title-card { padding: 16rpx 32rpx; margin-bottom: 4rpx; }
+.group-title-card .card-title { margin-bottom: 0; font-size: 28rpx; }
+
+.salary-row-card { padding: 16rpx 32rpx; margin-bottom: 2rpx; }
+.highlight-row-card { padding: 16rpx 32rpx; margin-bottom: 2rpx; border-left: 6rpx solid var(--primary-color); }
+
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10rpx 0; }
+.detail-label { font-size: 28rpx; color: var(--text-secondary); }
+.detail-value { font-size: 28rpx; font-weight: 600; color: var(--text-color); }
+
+.detail-row.highlight .detail-label { font-weight: 600; color: var(--text-color); font-size: 30rpx; }
+.detail-row.highlight .detail-value { font-size: 30rpx; }
+.amount-highlight { color: var(--primary-color); font-size: 34rpx !important; font-weight: 700 !important; }
+
+.text-danger { color: var(--danger-color); }
+.text-warning { color: var(--warning-color); }
+
+/* 加载 */
+.loading-spinner {
+  width: 48rpx; height: 48rpx;
+  border: 4rpx solid #e0e0e0; border-top-color: var(--primary-color);
+  border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16rpx;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

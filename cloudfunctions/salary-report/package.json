@@ -1,0 +1,9 @@
+{
+  "name": "salary-report",
+  "version": "1.0.0",
+  "description": "每月生成工资报表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

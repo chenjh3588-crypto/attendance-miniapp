@@ -1,0 +1,169 @@
+<view class="container admin-page">
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="admin-tabs">
+      <view class="admin-tab active">员工管理</view>
+      <view class="admin-tab" bindtap="goToAttendance">考勤记录</view>
+      <view class="admin-tab" bindtap="goToConfig">配置中心</view>
+      <view class="admin-tab" bindtap="goToLogs">操作日志</view>
+    </view>
+    <view class="add-btn" bindtap="onShowAddModal">+ 添加</view>
+  </view>
+
+  <!-- 员工列表 -->
+  <view wx:if="{{!loading}}" class="employee-list">
+    <view class="employee-card card" wx:for="{{employees}}" wx:key="_id">
+      <view class="employee-info">
+        <view class="avatar">{{item.name[0]}}</view>
+        <view class="employee-detail">
+          <view class="employee-name">
+            {{item.name}}
+            <view class="tag tag-{{item.role === 'admin' ? 'primary' : 'info'}}">{{item.roleLabel}}</view>
+            <view class="tag tag-{{item.type === 'fulltime' ? 'success' : 'warning'}}">{{item.typeLabel}}</view>
+          </view>
+          <view class="employee-meta">
+            <text>{{item.departmentLabel}}</text>
+            <text> | 底薪：¥{{item.salaryYuan}}</text>
+          </view>
+          <view class="employee-meta" wx:if="{{item.positionAllowanceYuan > 0 || item.businessCommissionYuan > 0}}">
+            <text wx:if="{{item.positionAllowanceYuan > 0}}">职务津贴：¥{{item.positionAllowanceYuan}}</text>
+            <text wx:if="{{item.businessCommissionYuan > 0}}"> | 提成：¥{{item.businessCommissionYuan}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="employee-actions">
+        <view class="action-btn edit-btn" data-employee="{{item}}" bindtap="onShowEditModal">编辑</view>
+        <view class="action-btn delete-btn" data-employee="{{item}}" bindtap="onDeleteEmployee">删除</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && employees.length === 0}}" class="empty-state">
+    <view class="empty-icon">👥</view>
+    <view class="empty-text">暂无员工，点击右上角添加</view>
+  </view>
+
+  <!-- 新增/编辑弹窗公用模板 -->
+  <!-- 新增弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="onHideAddModal"></view>
+  <view class="modal-content" wx:if="{{showAddModal}}">
+    <view class="modal-title">添加员工</view>
+    <view class="modal-body">
+      <view class="input-group">
+        <text class="input-label">姓名 *</text>
+        <input class="input-field" placeholder="请输入姓名" value="{{addForm.name}}" data-field="name" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">手机号</text>
+        <input class="input-field" placeholder="请输入手机号" type="number" value="{{addForm.phone}}" data-field="phone" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">部门</text>
+        <picker wx:if="{{departments.length > 0}}" range="{{departments}}" bindchange="onAddDepartmentChange">
+          <view class="input-field picker-field">{{addForm.department || '选择部门'}}</view>
+        </picker>
+        <input wx:else class="input-field" placeholder="请输入部门" value="{{addForm.department}}" data-field="department" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">员工类型</text>
+        <view class="radio-group">
+          <view class="radio-item {{addForm.type === 'fulltime' ? 'active' : ''}}" data-field="type" data-value="fulltime" bindtap="onAddFormInput">正式</view>
+          <view class="radio-item {{addForm.type === 'intern' ? 'active' : ''}}" data-field="type" data-value="intern" bindtap="onAddFormInput">实习</view>
+        </view>
+      </view>
+      <view class="input-group">
+        <text class="input-label">基本底薪（元/月）</text>
+        <input class="input-field" placeholder="请输入月薪" type="digit" value="{{addForm.monthlySalary}}" data-field="monthlySalary" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">职务津贴（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{addForm.positionAllowance}}" data-field="positionAllowance" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">业务提成（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{addForm.businessCommission}}" data-field="businessCommission" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">劳保补贴（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{addForm.laborProtectionSubsidy}}" data-field="laborProtectionSubsidy" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">借款（元）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{addForm.loan}}" data-field="loan" bindinput="onAddFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">角色</text>
+        <view class="radio-group">
+          <view class="radio-item {{addForm.role === 'employee' ? 'active' : ''}}" data-field="role" data-value="employee" bindtap="onAddFormInput">员工</view>
+          <view class="radio-item {{addForm.role === 'admin' ? 'active' : ''}}" data-field="role" data-value="admin" bindtap="onAddFormInput">管理员</view>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-secondary modal-btn" bindtap="onHideAddModal">取消</view>
+      <view class="btn-primary modal-btn" bindtap="onSubmitAdd">确定</view>
+    </view>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditModal}}" bindtap="onHideEditModal"></view>
+  <view class="modal-content" wx:if="{{showEditModal}}">
+    <view class="modal-title">编辑员工</view>
+    <view class="modal-body">
+      <view class="input-group">
+        <text class="input-label">姓名 *</text>
+        <input class="input-field" placeholder="请输入姓名" value="{{editForm.name}}" data-field="name" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">手机号</text>
+        <input class="input-field" placeholder="请输入手机号" type="number" value="{{editForm.phone}}" data-field="phone" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">部门</text>
+        <picker wx:if="{{departments.length > 0}}" range="{{departments}}" bindchange="onEditDepartmentChange">
+          <view class="input-field picker-field">{{editForm.department || '选择部门'}}</view>
+        </picker>
+        <input wx:else class="input-field" placeholder="请输入部门" value="{{editForm.department}}" data-field="department" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">员工类型</text>
+        <view class="radio-group">
+          <view class="radio-item {{editForm.type === 'fulltime' ? 'active' : ''}}" data-field="type" data-value="fulltime" bindtap="onEditFormInput">正式</view>
+          <view class="radio-item {{editForm.type === 'intern' ? 'active' : ''}}" data-field="type" data-value="intern" bindtap="onEditFormInput">实习</view>
+        </view>
+      </view>
+      <view class="input-group">
+        <text class="input-label">基本底薪（元/月）</text>
+        <input class="input-field" placeholder="请输入月薪" type="digit" value="{{editForm.monthlySalary}}" data-field="monthlySalary" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">职务津贴（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{editForm.positionAllowance}}" data-field="positionAllowance" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">业务提成（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{editForm.businessCommission}}" data-field="businessCommission" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">劳保补贴（元/月）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{editForm.laborProtectionSubsidy}}" data-field="laborProtectionSubsidy" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">借款（元）</text>
+        <input class="input-field" placeholder="0" type="digit" value="{{editForm.loan}}" data-field="loan" bindinput="onEditFormInput" />
+      </view>
+      <view class="input-group">
+        <text class="input-label">角色</text>
+        <view class="radio-group">
+          <view class="radio-item {{editForm.role === 'employee' ? 'active' : ''}}" data-field="role" data-value="employee" bindtap="onEditFormInput">员工</view>
+          <view class="radio-item {{editForm.role === 'admin' ? 'active' : ''}}" data-field="role" data-value="admin" bindtap="onEditFormInput">管理员</view>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-secondary modal-btn" bindtap="onHideEditModal">取消</view>
+      <view class="btn-primary modal-btn" bindtap="onSubmitEdit">保存</view>
+    </view>
+  </view>
+</view>

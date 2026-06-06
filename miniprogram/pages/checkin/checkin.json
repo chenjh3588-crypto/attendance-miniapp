@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "打卡",
+  "usingComponents": {
+    "checkin-thanks": "/components/checkin-thanks/checkin-thanks"
+  }
+}
