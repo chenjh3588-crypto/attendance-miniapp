@@ -43,17 +43,17 @@ Page({
     }
   },
 
-  onLoad() {
+  onLoad: function() {
     this.checkAdmin()
   },
 
-  onShow() {
+  onShow: function() {
     if (this.data.isAdmin) {
       this.loadEmployees()
     }
   },
 
-  checkAdmin() {
+  checkAdmin: function() {
     const isAdmin = app.globalData.isAdmin
     if (!isAdmin) {
       wx.showModal({
@@ -97,7 +97,7 @@ Page({
     }
   },
 
-  onShowAddModal() {
+  onShowAddModal: function() {
     this.setData({
       showAddModal: true,
       addForm: {
@@ -108,14 +108,14 @@ Page({
     })
   },
 
-  onHideAddModal() { this.setData({ showAddModal: false }) },
+  onHideAddModal: function() { this.setData({ showAddModal: false }) },
 
-  onAddFormInput(e) {
+  onAddFormInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`addForm.${field}`]: e.detail.value })
   },
 
-  onAddDepartmentChange(e) {
+  onAddDepartmentChange: function(e) {
     this.setData({ 'addForm.department': this.data.departments[e.detail.value] || '' })
   },
 
@@ -150,7 +150,7 @@ Page({
     }
   },
 
-  onShowEditModal(e) {
+  onShowEditModal: function(e) {
     const employee = e.currentTarget.dataset.employee
     this.setData({
       showEditModal: true,
@@ -170,14 +170,14 @@ Page({
     })
   },
 
-  onHideEditModal() { this.setData({ showEditModal: false, editingEmployee: null }) },
+  onHideEditModal: function() { this.setData({ showEditModal: false, editingEmployee: null }) },
 
-  onEditFormInput(e) {
+  onEditFormInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`editForm.${field}`]: e.detail.value })
   },
 
-  onEditDepartmentChange(e) {
+  onEditDepartmentChange: function(e) {
     this.setData({ 'editForm.department': this.data.departments[e.detail.value] || '' })
   },
 
@@ -209,7 +209,7 @@ Page({
     }
   },
 
-  onDeleteEmployee(e) {
+  onDeleteEmployee: function(e) {
     const employee = e.currentTarget.dataset.employee
     wx.showModal({
       title: '确认删除',

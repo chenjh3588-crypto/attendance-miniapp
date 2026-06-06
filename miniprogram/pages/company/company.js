@@ -8,7 +8,7 @@ Page({
     loading: true
   },
 
-  onLoad() {
+  onLoad: function() {
     this.loadCompanies()
   },
 
@@ -67,7 +67,7 @@ Page({
   },
 
   // 创建新公司
-  onCreateCompany() {
+  onCreateCompany: function() {
     wx.redirectTo({ url: '/pages/guild/guild' })
   }
 })

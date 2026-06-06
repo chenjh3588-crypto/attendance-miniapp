@@ -46,14 +46,14 @@ Page({
     thanksTime: ''
   },
 
-  onLoad() {
+  onLoad: function() {
     this.setData({
       currentDate: formatTime(new Date(), 'YYYY年MM月DD日'),
       currentDay: this.getDayName(new Date().getDay())
     })
   },
 
-  onShow() {
+  onShow: function() {
     this.updateCompanyTheme()
     this.loadEmployeeProfile()
     this.startClock()
@@ -71,14 +71,14 @@ Page({
     }
   },
 
-  onUnload() {
+  onUnload: function() {
     if (this._clockTimer) {
       clearInterval(this._clockTimer)
     }
   },
 
   // 加载员工个人标签
-  loadEmployeeProfile() {
+  loadEmployeeProfile: function() {
     const employee = app.globalData.currentEmployee
     if (employee) {
       this.setData({
@@ -90,7 +90,7 @@ Page({
   },
 
   // 更新公司主题
-  updateCompanyTheme() {
+  updateCompanyTheme: function() {
     const company = app.globalData.currentCompany
     if (company) {
       this.setData({
@@ -108,7 +108,7 @@ Page({
   },
 
   // 启动时钟
-  startClock() {
+  startClock: function() {
     const update = () => {
       const now = new Date()
       this.setData({
@@ -125,7 +125,7 @@ Page({
   },
 
   // 获取 GPS 定位
-  getLocation() {
+  getLocation: function() {
     wx.getLocation({
       type: 'gcj02',
       success: (res) => {
@@ -162,7 +162,7 @@ Page({
   },
 
   // 获取 Wi-Fi 信息
-  getWifiInfo() {
+  getWifiInfo: function() {
     wx.getConnectedWifi({
       success: (res) => {
         this.setData({
@@ -177,7 +177,7 @@ Page({
   },
 
   // 检查 GPS 是否在公司范围内
-  checkLocationInArea() {
+  checkLocationInArea: function() {
     const company = app.globalData.currentCompany
     const location = this.data.currentLocation
 
@@ -208,7 +208,7 @@ Page({
   },
 
   // 检查 Wi-Fi 是否在白名单
-  checkWifiInWhitelist() {
+  checkWifiInWhitelist: function() {
     const company = app.globalData.currentCompany
     if (!company || !company.wifiWhitelist || !company.wifiWhitelist.length) {
       return
@@ -264,7 +264,7 @@ Page({
   },
 
   // 关闭感谢页
-  onThanksDismiss() {
+  onThanksDismiss: function() {
     this.setData({ showThanks: false })
   },
 
@@ -416,7 +416,7 @@ Page({
   },
 
   // 获取网络类型
-  getNetworkType() {
+  getNetworkType: function() {
     return new Promise((resolve) => {
       wx.getNetworkType({
         success: (res) => resolve(res.networkType),
@@ -426,7 +426,7 @@ Page({
   },
 
   // 跳转个人标签页
-  goToProfile() {
+  goToProfile: function() {
     wx.navigateTo({ url: '/pages/profile/profile' })
   }
 })

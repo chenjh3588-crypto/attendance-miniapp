@@ -7,53 +7,61 @@ Page({
     loading: true
   },
 
-  onLoad() {
+  onLoad: function() {
     this.init()
   },
 
-  async init() {
-    try {
-      // 获取 openid
-      await app.getOpenId()
+  init: function() {
+    var that = this
 
+    // 获取 openid
+    app.getOpenId().then(function(openid) {
       // 检查是否有已选择的公司
-      const companyId = wx.getStorageSync('currentCompanyId')
+      var companyId = wx.getStorageSync('currentCompanyId')
 
       if (companyId) {
         // 已有公司，跳转打卡页
         wx.switchTab({ url: '/pages/checkin/checkin' })
-      } else {
-        // 检查用户是否加入过公司
-        const db = wx.cloud.database()
-        const openid = app.globalData.openid
-        const res = await db.collection('employees')
-          .where({ openid, status: 'active' })
-          .get()
-
-        if (res.data.length > 0) {
-          if (res.data.length === 1) {
-            // 只有一个公司，自动进入
-            const employee = res.data[0]
-            const companyRes = await db.collection('companies')
-              .doc(employee.companyId)
-              .get()
-
-            app.setCurrentCompany(companyRes.data)
-            app.setCurrentEmployee(employee)
-            wx.switchTab({ url: '/pages/checkin/checkin' })
-          } else {
-            // 多个公司，跳转选择页
-            wx.redirectTo({ url: '/pages/company/company' })
-          }
-        } else {
-          // 未加入任何公司，跳转引导页
-          wx.redirectTo({ url: '/pages/guild/guild' })
-        }
+        return
       }
-    } catch (err) {
+
+      // 检查用户是否加入过公司
+      var db = wx.cloud.database()
+      return db.collection('employees')
+        .where({ openid: openid, status: 'active' })
+        .get()
+
+    }).then(function(res) {
+      if (!res || !res.data) return
+
+      if (res.data.length > 0) {
+        if (res.data.length === 1) {
+          // 只有一个公司，自动进入
+          var employee = res.data[0]
+          var db = wx.cloud.database()
+
+          db.collection('companies')
+            .doc(employee.companyId)
+            .get()
+            .then(function(companyRes) {
+              app.setCurrentCompany(companyRes.data)
+              app.setCurrentEmployee(employee)
+              wx.switchTab({ url: '/pages/checkin/checkin' })
+            })
+
+        } else {
+          // 多个公司，跳转选择页
+          wx.redirectTo({ url: '/pages/company/company' })
+        }
+      } else {
+        // 未加入任何公司，跳转引导页
+        wx.redirectTo({ url: '/pages/guild/guild' })
+      }
+
+    }).catch(function(err) {
       console.error('初始化失败:', err)
-      this.setData({ loading: false })
+      that.setData({ loading: false })
       wx.showToast({ title: '加载失败，请重试', icon: 'none' })
-    }
+    })
   }
 })

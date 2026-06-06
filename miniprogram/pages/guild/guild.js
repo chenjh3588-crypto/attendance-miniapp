@@ -17,33 +17,33 @@ Page({
   },
 
   // 切换到创建公司
-  onCreateCompany() {
+  onCreateCompany: function() {
     this.setData({ step: 'create' })
   },
 
   // 切换到加入公司
-  onJoinCompany() {
+  onJoinCompany: function() {
     this.setData({ step: 'join' })
   },
 
   // 返回选择页
-  goBack() {
+  goBack: function() {
     this.setData({ step: 'choose' })
   },
 
   // 输入公司名称
-  onCompanyNameInput(e) {
+  onCompanyNameInput: function(e) {
     this.setData({ companyName: e.detail.value })
   },
 
   // 选择主题色
-  onThemeColorSelect(e) {
+  onThemeColorSelect: function(e) {
     const color = e.currentTarget.dataset.color
     this.setData({ themeColor: color })
   },
 
   // 上传公司 Logo
-  onChooseLogo() {
+  onChooseLogo: function() {
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -186,7 +186,7 @@ Page({
   },
 
   // 输入邀请码
-  onInviteCodeInput(e) {
+  onInviteCodeInput: function(e) {
     this.setData({ inviteCode: e.detail.value.toUpperCase() })
   },
 

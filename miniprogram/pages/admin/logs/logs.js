@@ -13,11 +13,11 @@ Page({
     hasMore: true
   },
 
-  onLoad() {
+  onLoad: function() {
     this.checkAdmin()
   },
 
-  checkAdmin() {
+  checkAdmin: function() {
     if (!app.globalData.isAdmin) {
       wx.showModal({
         title: '无权限',
@@ -63,7 +63,7 @@ Page({
     return map[action] || action
   },
 
-  onLoadMore() {
+  onLoadMore: function() {
     if (!this.data.hasMore) return
     this.setData({ page: this.data.page + 1 })
     this.loadLogs()

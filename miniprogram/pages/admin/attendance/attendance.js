@@ -24,12 +24,12 @@ Page({
     }
   },
 
-  onLoad() {
+  onLoad: function() {
     this.setData({ selectedDate: getToday() })
     this.checkAdmin()
   },
 
-  checkAdmin() {
+  checkAdmin: function() {
     if (!app.globalData.isAdmin) {
       wx.showModal({
         title: '无权限',
@@ -80,13 +80,13 @@ Page({
   },
 
   // 日期变更
-  onDateChange(e) {
+  onDateChange: function(e) {
     this.setData({ selectedDate: e.detail.value, loading: true })
     this.loadData()
   },
 
   // 显示编辑弹窗
-  onShowEditModal(e) {
+  onShowEditModal: function(e) {
     const index = e.currentTarget.dataset.index
     const item = this.data.attendanceList[index]
     if (!item.record) {
@@ -104,11 +104,11 @@ Page({
     })
   },
 
-  onHideEditModal() {
+  onHideEditModal: function() {
     this.setData({ showEditModal: false, editingRecord: null })
   },
 
-  onEditFormInput(e) {
+  onEditFormInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`editForm.${field}`]: e.detail.value })
   },

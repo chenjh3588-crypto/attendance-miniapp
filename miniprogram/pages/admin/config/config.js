@@ -105,11 +105,11 @@ Page({
     },
   },
 
-  onLoad() {
+  onLoad: function() {
     this.checkAdmin()
   },
 
-  checkAdmin() {
+  checkAdmin: function() {
     if (!app.globalData.isAdmin) {
       wx.showModal({
         title: '无权限',
@@ -186,7 +186,7 @@ Page({
   },
 
   // 折叠/展开
-  onToggleSection(e) {
+  onToggleSection: function(e) {
     const section = e.currentTarget.dataset.section
     this.setData({
       [`expandedSections.${section}`]: !this.data.expandedSections[section]
@@ -194,34 +194,34 @@ Page({
   },
 
   // 表单输入处理
-  onFormInput(e) {
+  onFormInput: function(e) {
     const field = e.currentTarget.dataset.field
     let value = e.detail.value
     if (['monthlyWorkHours', 'monthlyWorkDays'].includes(field)) value = Number(value)
     this.setData({ [`form.${field}`]: value })
   },
 
-  onMealRuleInput(e) {
+  onMealRuleInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`form.mealSubsidyRules.${field}`]: Number(e.detail.value) })
   },
 
-  onSeniorityInput(e) {
+  onSeniorityInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`form.seniorityRules.${field}`]: Number(e.detail.value) })
   },
 
-  onLeaveRuleInput(e) {
+  onLeaveRuleInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`form.leaveRules.${field}`]: Number(e.detail.value) })
   },
 
   // 部门管理
-  onDepartmentInput(e) {
+  onDepartmentInput: function(e) {
     this.setData({ newDepartment: e.detail.value })
   },
 
-  onAddDepartment() {
+  onAddDepartment: function() {
     const dept = this.data.newDepartment.trim()
     if (!dept) return
     if (this.data.departments.includes(dept)) {
@@ -232,7 +232,7 @@ Page({
     this.setData({ departments, newDepartment: '' })
   },
 
-  onRemoveDepartment(e) {
+  onRemoveDepartment: function(e) {
     const index = e.currentTarget.dataset.index
     const departments = [...this.data.departments]
     departments.splice(index, 1)
@@ -240,8 +240,8 @@ Page({
   },
 
   // Wi-Fi 管理
-  onWifiInput(e) { this.setData({ newWifi: e.detail.value }) },
-  onAddWifi() {
+  onWifiInput: function(e) { this.setData({ newWifi: e.detail.value }) },
+  onAddWifi: function() {
     const wifi = this.data.newWifi.trim()
     if (!wifi) return
     this.setData({
@@ -249,21 +249,21 @@ Page({
       newWifi: ''
     })
   },
-  onRemoveWifi(e) {
+  onRemoveWifi: function(e) {
     const whitelist = [...this.data.companyConfig.wifiWhitelist]
     whitelist.splice(e.currentTarget.dataset.index, 1)
     this.setData({ 'companyConfig.wifiWhitelist': whitelist })
   },
 
   // 罚款规则管理
-  onPenaltyToggle(e) {
+  onPenaltyToggle: function(e) {
     const index = e.currentTarget.dataset.index
     this.setData({ [`form.penaltyRules[${index}].enabled`]: !this.data.form.penaltyRules[index].enabled })
   },
-  onPenaltyRateInput(e) {
+  onPenaltyRateInput: function(e) {
     this.setData({ [`form.penaltyRules[${e.currentTarget.dataset.index}].rate`]: Number(e.detail.value) })
   },
-  onAddPenaltyRule() {
+  onAddPenaltyRule: function() {
     const { newPenaltyName, newPenaltyMode, newPenaltyRate } = this.data
     if (!newPenaltyName.trim()) { wx.showToast({ title: '请输入规则名称', icon: 'none' }); return }
     this.setData({
@@ -274,7 +274,7 @@ Page({
       newPenaltyName: '', newPenaltyRate: ''
     })
   },
-  onRemovePenaltyRule(e) {
+  onRemovePenaltyRule: function(e) {
     const rules = [...this.data.form.penaltyRules]
     rules.splice(e.currentTarget.dataset.index, 1)
     this.setData({ 'form.penaltyRules': rules })
@@ -343,7 +343,7 @@ Page({
     }
   },
 
-  onSetLocation() {
+  onSetLocation: function() {
     wx.getLocation({
       type: 'gcj02',
       success: async (res) => {
@@ -355,14 +355,14 @@ Page({
     })
   },
 
-  onNewPenaltyNameInput(e) { this.setData({ newPenaltyName: e.detail.value }) },
-  onNewPenaltyRateInput(e) { this.setData({ newPenaltyRate: e.detail.value }) },
-  onSetPenaltyMode(e) { this.setData({ newPenaltyMode: e.currentTarget.dataset.mode }) },
+  onNewPenaltyNameInput: function(e) { this.setData({ newPenaltyName: e.detail.value }) },
+  onNewPenaltyRateInput: function(e) { this.setData({ newPenaltyRate: e.detail.value }) },
+  onSetPenaltyMode: function(e) { this.setData({ newPenaltyMode: e.currentTarget.dataset.mode }) },
 
   // ===== 工资条字段完全自定义管理 =====
 
   // 添加字段
-  onShowAddFieldModal() {
+  onShowAddFieldModal: function() {
     const usedSources = this.data.salaryTemplate
       .filter(f => f.type === 'auto' && f.source)
       .map(f => f.source)
@@ -373,12 +373,12 @@ Page({
       addFieldForm: { label: '', type: 'manual', source: '', dataType: 'money', group: 'bonus' }
     })
   },
-  onHideAddFieldModal() { this.setData({ showAddFieldModal: false }) },
-  onAddFieldFormInput(e) {
+  onHideAddFieldModal: function() { this.setData({ showAddFieldModal: false }) },
+  onAddFieldFormInput: function(e) {
     const field = e.currentTarget.dataset.field
     this.setData({ [`addFieldForm.${field}`]: e.detail.value })
   },
-  onAddFieldTypeChange(e) {
+  onAddFieldTypeChange: function(e) {
     const type = e.currentTarget.dataset.type
     const updates = { 'addFieldForm.type': type }
     if (type === 'auto') {
@@ -386,7 +386,7 @@ Page({
     }
     this.setData(updates)
   },
-  onAddFieldSourceChange(e) {
+  onAddFieldSourceChange: function(e) {
     const source = e.currentTarget.dataset.source
     const sourceDef = getAvailableAutoSources([]).find(s => s.source === source)
     this.setData({
@@ -396,7 +396,7 @@ Page({
     })
   },
 
-  onSubmitAddField() {
+  onSubmitAddField: function() {
     const form = this.data.addFieldForm
     if (!form.label.trim()) { wx.showToast({ title: '请输入字段名称', icon: 'none' }); return }
     if (form.type === 'auto' && !form.source) { wx.showToast({ title: '请选择数据来源', icon: 'none' }); return }
@@ -428,7 +428,7 @@ Page({
   },
 
   // 编辑字段
-  onShowEditFieldModal(e) {
+  onShowEditFieldModal: function(e) {
     const id = e.currentTarget.dataset.id
     const field = this.data.salaryTemplate.find(f => f.id === id)
     if (!field) return
@@ -437,11 +437,11 @@ Page({
       editFieldForm: { id: field.id, label: field.label, group: field.group }
     })
   },
-  onHideEditFieldModal() { this.setData({ showEditFieldModal: false }) },
-  onEditFieldFormInput(e) {
+  onHideEditFieldModal: function() { this.setData({ showEditFieldModal: false }) },
+  onEditFieldFormInput: function(e) {
     this.setData({ [`editFieldForm.${e.currentTarget.dataset.field}`]: e.detail.value })
   },
-  onSubmitEditField() {
+  onSubmitEditField: function() {
     const { editFieldForm, salaryTemplate } = this.data
     if (!editFieldForm.label.trim()) { wx.showToast({ title: '请输入名称', icon: 'none' }); return }
     const template = [...salaryTemplate]
@@ -455,7 +455,7 @@ Page({
   },
 
   // 删除字段
-  onDeleteField(e) {
+  onDeleteField: function(e) {
     const id = e.currentTarget.dataset.id
     const field = this.data.salaryTemplate.find(f => f.id === id)
     wx.showModal({
@@ -471,7 +471,7 @@ Page({
   },
 
   // 上移
-  onMoveFieldUp(e) {
+  onMoveFieldUp: function(e) {
     const id = e.currentTarget.dataset.id
     const template = [...this.data.salaryTemplate].sort((a, b) => a.order - b.order)
     const index = template.findIndex(f => f.id === id)
@@ -484,7 +484,7 @@ Page({
   },
 
   // 下移
-  onMoveFieldDown(e) {
+  onMoveFieldDown: function(e) {
     const id = e.currentTarget.dataset.id
     const template = [...this.data.salaryTemplate].sort((a, b) => a.order - b.order)
     const index = template.findIndex(f => f.id === id)
@@ -497,7 +497,7 @@ Page({
   },
 
   // 切换高亮
-  onToggleHighlight(e) {
+  onToggleHighlight: function(e) {
     const id = e.currentTarget.dataset.id
     const template = [...this.data.salaryTemplate]
     const field = template.find(f => f.id === id)
@@ -505,7 +505,7 @@ Page({
   },
 
   // 恢复默认模板
-  onResetTemplate() {
+  onResetTemplate: function() {
     wx.showModal({
       title: '恢复默认',
       content: '将恢复为默认工资条模板，所有自定义字段将丢失',

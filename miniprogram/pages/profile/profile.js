@@ -12,7 +12,7 @@ Page({
     saving: false
   },
 
-  onLoad() {
+  onLoad: function() {
     this.loadProfile()
   },
 
@@ -29,7 +29,7 @@ Page({
   },
 
   // 选择头像
-  onChooseAvatar() {
+  onChooseAvatar: function() {
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -65,7 +65,7 @@ Page({
   },
 
   // 昵称输入
-  onNicknameInput(e) {
+  onNicknameInput: function(e) {
     this.setData({ nickname: e.detail.value })
   },
 

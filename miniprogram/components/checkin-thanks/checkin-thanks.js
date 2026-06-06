@@ -41,7 +41,7 @@ Component({
   },
 
   lifetimes: {
-    detached() {
+    detached: function() {
       if (this._autoHideTimer) {
         clearTimeout(this._autoHideTimer)
       }
@@ -50,12 +50,12 @@ Component({
 
   methods: {
     // 触摸退出
-    onTapDismiss() {
+    onTapDismiss: function() {
       this.dismiss()
     },
 
     // 关闭
-    dismiss() {
+    dismiss: function() {
       if (this._autoHideTimer) {
         clearTimeout(this._autoHideTimer)
         this._autoHideTimer = null

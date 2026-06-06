@@ -33,16 +33,16 @@ Page({
     workContent: ''
   },
 
-  onLoad() {
+  onLoad: function() {
     this.generateCalendar()
   },
 
-  onShow() {
+  onShow: function() {
     this.loadMonthRecords()
   },
 
   // 生成日历数据
-  generateCalendar() {
+  generateCalendar: function() {
     const { year, month } = this.data
     const daysInMonth = getDaysInMonth(year, month)
     const firstDay = new Date(year, month - 1, 1).getDay() // 0=周日
@@ -116,7 +116,7 @@ Page({
   },
 
   // 上个月
-  onPrevMonth() {
+  onPrevMonth: function() {
     let { year, month } = this.data
     month--
     if (month < 1) {
@@ -129,7 +129,7 @@ Page({
   },
 
   // 下个月
-  onNextMonth() {
+  onNextMonth: function() {
     let { year, month } = this.data
     month++
     if (month > 12) {
@@ -142,7 +142,7 @@ Page({
   },
 
   // 点击日期
-  onDateTap(e) {
+  onDateTap: function(e) {
     const date = e.currentTarget.dataset.date
     if (!date) return
 
@@ -157,12 +157,12 @@ Page({
   },
 
   // 编辑工作内容
-  onEditWorkContent() {
+  onEditWorkContent: function() {
     this.setData({ editingWorkContent: true })
   },
 
   // 工作内容输入
-  onWorkContentInput(e) {
+  onWorkContentInput: function(e) {
     this.setData({ workContent: e.detail.value })
   },
 

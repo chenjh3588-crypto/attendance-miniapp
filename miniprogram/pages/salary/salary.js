@@ -20,7 +20,7 @@ Page({
   onLoad: function() { this.loadSalaryData() },
   onShow: function() { this.loadSalaryData() },
 
-  onPrevMonth() {
+  onPrevMonth: function() {
     let { year, month } = this.data
     month--
     if (month < 1) { month = 12; year-- }
@@ -28,7 +28,7 @@ Page({
     this.loadSalaryData()
   },
 
-  onNextMonth() {
+  onNextMonth: function() {
     let { year, month } = this.data
     month++
     if (month > 12) { month = 1; year++ }
